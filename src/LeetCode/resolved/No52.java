@@ -1,4 +1,4 @@
-package LeetCode.solving;
+package LeetCode.resolved;
 
 import java.util.Arrays;
 

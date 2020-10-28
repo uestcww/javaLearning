@@ -40,14 +40,17 @@ public class No92 {
     }
 
     public static void main(String[] args) {
-        List<ListNode> lists = new ArrayList<ListNode>();
-        lists.add(new ListNode(1));
-        lists.add(new ListNode(2));
-        lists.add(new ListNode(3));
-        lists.add(new ListNode(4));
-        lists.add(new ListNode(5));
         No92 obj = new No92();
-        System.out.println(obj.reverseBetween(ListNode.asLinkedList(lists), 2, 4));
+        List<ListNode> lists = new ArrayList<ListNode>();
+//        lists.add(new ListNode(1));
+//        lists.add(new ListNode(2));
+//        lists.add(new ListNode(3));
+//        lists.add(new ListNode(4));
+//        lists.add(new ListNode(5));
+//        System.out.println(obj.reverseBetween(ListNode.asLinkedList(lists), 2, 4));
+        lists.add(new ListNode(3));
+        lists.add(new ListNode(5));
+        System.out.println(obj.reverseBetween(ListNode.asLinkedList(lists), 1, 2));
     }
 
 }

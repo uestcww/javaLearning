@@ -1,13 +1,21 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class Test {
 
     public static void main(String[] args) {
-        char[][] board = new char[5][5];
-        for(char[] charArr : board){
-            Arrays.fill(charArr, '.');
+        Set<String> set = new HashSet<String>();
+        set.add("hello");
+        set.add("world");
+        set.add("why");
+        set.add("for the king");
+        set.add("for the lich king");
+        long before = System.currentTimeMillis();
+        Iterator<String> it = set.iterator();
+        while(it.hasNext()){
+            System.out.println(it.next());
         }
-        System.out.println(board[2][2] == '.');
+        long after = System.currentTimeMillis();
+        System.out.println(after-before);
     }
 
 }
