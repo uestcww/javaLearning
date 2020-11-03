@@ -1,4 +1,4 @@
-package LeetCode.resolved.array;
+package LeetCode.resolved;
 
 public class No42 {
 

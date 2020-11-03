@@ -34,7 +34,7 @@ public class No77 {
         System.out.println(listList);
     }
     /*
-    * 旧版，有很多可以优化的地方，上面是看过解析后的版本
+    * 旧版，虽然对了，但是有很多可以优化的地方，上面是看过解析后的版本
     * */
 //    List<List<Integer>> result = new ArrayList<List<Integer>>();
 //

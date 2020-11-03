@@ -1,11 +1,11 @@
-package LeetCode.resolved.string;
+package LeetCode.resolved;
 
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class No71 {
 
-    //可以用字符串的split方法
+    // 可以用字符串的split方法
     public String simplifyPath(String path) {
         char[] charArr = path.toCharArray();
         Deque<String> stack = new LinkedList<String>();

@@ -2,7 +2,7 @@ package LeetCode.resolved.array;
 
 public class No11 {
 
-    //最优的方法是双指针，先指向两头，然后向中间移动
+    // 最优的方法是双指针，先指向两头，然后向中间移动，我这个还不是最优的方法
     public int maxArea(int[] height) {
         int length = height.length;
         int max=0;

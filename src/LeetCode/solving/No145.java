@@ -111,7 +111,6 @@ public class No145 {
     * */
     public List<Integer> preorderTraversalMorris(TreeNode root) {
         LinkedList<Integer> output = new LinkedList<>();
-
         TreeNode node = root;
         while (node != null) {
             if (node.left == null) {
@@ -123,7 +122,6 @@ public class No145 {
                 while ((predecessor.right != null) && (predecessor.right != node)) {
                     predecessor = predecessor.right;
                 }
-
                 if (predecessor.right == null) {
                     output.add(node.val);
                     predecessor.right = node;
