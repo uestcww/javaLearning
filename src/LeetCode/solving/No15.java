@@ -1,4 +1,4 @@
-package LeetCode.unsolved;
+package LeetCode.solving;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public class No15 {
         backtrack(pointer+1);
     }
 
-    //LeetCode官方解法
+    //LeetCode官方解法，写的真好，我真垃圾
     public List<List<Integer>> threeSumLeetCode(int[] nums) {
         int n = nums.length;
         Arrays.sort(nums);

@@ -1,26 +1,16 @@
+import LeetCode.utils.TreeNode;
+
 import java.util.*;
 
 public class Test {
 
     public static void main(String[] args) {
-        String str = "+";
-        switch(str){
-            case "+":
-                System.out.println("加号");
-                break;
-            case "-":
-                System.out.println("减号");
-                break;
-            case "*":
-                System.out.println("乘号");
-                break;
-            case "/":
-                System.out.println("除号");
-                break;
-            default:
-                System.out.println("其他");
-                break;
-        }
+        List<Integer> list = new ArrayList<>();
+        list.add(12);
+        list.add(45);
+        list.add(11);
+        list.add(3, 55);
+        System.out.println(list);
     }
 
 }
