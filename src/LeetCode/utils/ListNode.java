@@ -19,6 +19,9 @@ public class ListNode {
     public String toString(){
         return this.next == null ? this.val + " -> null":this.val + " -> " + this.next.toString();
     }
+//    public String toString(){
+//        return "val=" + this.val;
+//    }
     public void link(ListNode node){
         this.next = node;
     }

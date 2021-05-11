@@ -1,5 +1,7 @@
 package LeetCode.utils;
 
+import java.util.List;
+
 public class TreeNode {
 
     public int val = 0;
@@ -24,6 +26,13 @@ public class TreeNode {
         right = _right;
         next = _next;
     }
+//    public TreeNode(List<Integer> list){
+//        int length;
+//        if(list == null || (length = list.size()) < 1){
+//            return;
+//        }
+//
+//    }
     public void printAll(){
         System.out.println("********************");
         System.out.println("val   = " + this.val);
