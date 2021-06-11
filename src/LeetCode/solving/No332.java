@@ -1,4 +1,4 @@
-package LeetCode.unsolved;
+package LeetCode.solving;
 
 import java.util.*;
 

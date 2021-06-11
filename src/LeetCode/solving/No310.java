@@ -1,16 +1,135 @@
-package LeetCode.unsolved;
+package LeetCode.solving;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class No310 {
 
-    //看别人的代码，还是强的，最主要的问题就是，一定要想清楚需要什么数据结构，我们有了边和节点，但是需要邻居集合，感觉还是图的基础知识有欠缺，可以回去补一下了
+    public static void main(String[] args) {
+//        System.out.println("[1] ? " + new No310().findMinHeightTrees(4, new int[][]{
+//                {1, 0}, {1, 2}, {1, 3}
+//        }));
+//        System.out.println("[3, 4] ? " + new No310().findMinHeightTrees(6, new int[][]{
+//                {3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}
+//        }));
+//        System.out.println("[0] ? " + new No310().findMinHeightTrees(1, new int[][]{
+//
+//        }));
+//        System.out.println("[0, 1] ? " + new No310().findMinHeightTrees(2, new int[][]{
+//                {0, 1}
+//        }));
+    }
+
+    // 还是超出时间限制，我服了
+    public List<Integer> findMinHeightTrees2(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> lists = new ArrayList<>();
+        for(int i=0;i<n;++i){
+            lists.add(new ArrayList<Integer>());
+        }
+        int[][] data = new int[n][n];
+        for(int[] edge : edges){
+            lists.get(edge[0]).add(edge[1]);
+            lists.get(edge[1]).add(edge[0]);
+            data[edge[0]][edge[1]] = 1;
+            data[edge[1]][edge[0]] = 1;
+        }
+        int[] maxDepth = new int[n];
+        int depth, min = Integer.MAX_VALUE;
+        HashSet<Integer> visitedNode = new HashSet<>();
+        HashSet<Integer> neighbors = new HashSet<>();
+        HashSet<Integer> temp = new HashSet<>();
+        for(int i=0;i<n;++i){
+            depth = 1;
+            visitedNode.clear();
+            visitedNode.add(i);
+            neighbors.clear();
+            neighbors.addAll(lists.get(i));
+            while(visitedNode.size() < n){
+                visitedNode.addAll(neighbors);
+                ++depth;
+                for(int neighbor : neighbors){
+                    temp.addAll(lists.get(neighbor));
+                }
+                temp.removeAll(visitedNode);
+                neighbors.clear();
+                neighbors.addAll(temp);
+            }
+            maxDepth[i] = depth;
+            if(min > depth){
+                min = depth;
+            }
+        }
+        List<Integer> result = new ArrayList<>();
+        for(int i=0;i<n;++i){
+            if(maxDepth[i] == min){
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
+    // 还是超出时间限制，问题就出在计算深度的函数上，我在思考如何利用深度优先遍历或者广度优先遍历的思想去计算深度
+    public List<Integer> findMinHeightTrees1(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> lists = new ArrayList<>();
+        for(int i=0;i<n;++i){
+            lists.add(new ArrayList<Integer>());
+        }
+        int[][] data = new int[n][n];
+        for(int[] edge : edges){
+            lists.get(edge[0]).add(edge[1]);
+            lists.get(edge[1]).add(edge[0]);
+            data[edge[0]][edge[1]] = 1;
+            data[edge[1]][edge[0]] = 1;
+        }
+        int[] maxDepth = new int[n];
+        int max, min = Integer.MAX_VALUE;
+        for(int i=0;i<n;++i){
+            max = 0;
+            for(int j=0;j<n;j++){
+                heightCalculate1(i, j, data, lists);
+                if(data[i][j] > max){
+                    max = data[i][j];
+                }
+            }
+            maxDepth[i] = max;
+            if(min > max){
+                min = max;
+            }
+        }
+        List<Integer> result = new ArrayList<>();
+        for(int i=0;i<n;++i){
+            if(maxDepth[i] == min){
+                result.add(i);
+            }
+        }
+        return result;
+    }
+    public void heightCalculate1(int left, int right, int[][] data, ArrayList<ArrayList<Integer>> lists){
+        if(left == right || data[left][right] != 0){
+            return;
+        }
+        int step = 2;
+        HashSet<Integer> temp = new HashSet<>();
+        HashSet<Integer> isVisited = new HashSet<>();
+        HashSet<Integer> neighbors = new HashSet<>(lists.get(left));
+        while(!neighbors.isEmpty()){
+            temp.clear();
+            for(int nei : neighbors){
+                if(lists.get(nei).contains(right)){
+                    data[left][right] = step;
+                    data[right][left] = step;
+                    return;
+                }
+                temp.addAll(lists.get(nei));
+            }
+            isVisited.addAll(neighbors);
+            temp.removeAll(isVisited);
+            neighbors = new HashSet<>(temp);
+            ++step;
+        }
+    }
 
     // 超出时间限制，有点头疼，看来对是对了，就是算法太垃圾了
-    public List<Integer> findMinHeightTrees(int n, int[][] edges){
+    public List<Integer> findMinHeightTrees0(int n, int[][] edges){
         int[] height = new int[n];
         int[] statistical = new int[n];
         int min = Integer.MAX_VALUE;
@@ -22,7 +141,7 @@ public class No310 {
             if(n > 10 && statistical[i] <= 1){
                 continue;
             }
-            height[i] = heightCalculate(i, edges);
+            height[i] = heightCalculate0(i, edges);
             if(height[i] < min){
                 min = height[i];
             }
@@ -35,7 +154,7 @@ public class No310 {
         }
         return res;
     }
-    public int heightCalculate(int num, int[][] edges){
+    public int heightCalculate0(int num, int[][] edges){
         int count = edges.length;
         int[] visitedPoint = new int[count + 1];
         boolean[] visitedEdge = new boolean[count];
@@ -120,19 +239,5 @@ public class No310 {
         return res;/*返回最后一次保存的list*/
     }
 
-    public static void main(String[] args) {
-        No310 obj = new No310();
-        System.out.println("[1] ? " + obj.findMinHeightTrees(4, new int[][]{
-                {1, 0}, {1, 2}, {1, 3}
-        }));
-        System.out.println("[3, 4] ? " + obj.findMinHeightTrees(6, new int[][]{
-                {3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}
-        }));
-        System.out.println("[0] ? " + obj.findMinHeightTrees(1, new int[][]{
 
-        }));
-        System.out.println("[0, 1] ? " + obj.findMinHeightTrees(2, new int[][]{
-                {0, 1}
-        }));
-    }
 }

@@ -1,6 +1,6 @@
-package DataStructure;
+package DataStructure.Sort;
 
-public class Sort {
+public class QuickSortTest {
 
     public static void quickSort(int[] array) {
         int len;
@@ -59,7 +59,7 @@ public class Sort {
 
     public static void main(String[] args) {
         int[] testArr = {2, 5, 45, 18, 37, 76, 44, 13, 44, 45, 12, 64, 53, 43, 16, 24, 36, 22, 83};
-        Sort.quickSort(testArr);
+        QuickSortTest.quickSort(testArr);
         for(int a : testArr){
             System.out.print(a + " ");
         }

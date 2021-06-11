@@ -2,7 +2,8 @@ package CommonUtils;
 
 public class ActualStorageOfNumber {
 
-    public void ActualStorageOfInteger(int num){
+    // 输出的就是数字的补码
+    public static void ActualStorageOfInteger(int num){
         StringBuilder result = new StringBuilder();
         int count = 0;
         while(num != 0){
@@ -14,6 +15,10 @@ public class ActualStorageOfNumber {
             }
         }
         System.out.println(result.reverse().toString());
+    }
+
+    public static void main(String[] args) {
+        ActualStorageOfNumber.ActualStorageOfInteger(-1);
     }
 
 }
