@@ -2,6 +2,23 @@ package LeetCode.resolved.bestTimeToBuyAndSellStock;
 
 public class No122 {
 
+    public static void main(String[] args) {
+        No122 obj = new No122();
+        System.out.println("7 ? " + obj.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
+        System.out.println("4 ? " + obj.maxProfit(new int[]{1, 2, 3, 4, 5}));
+        System.out.println("0 ? " + obj.maxProfit(new int[]{7, 6, 4, 3, 1}));
+    }
+
+    public int maxProfitGreedy(int[] prices){
+        int sum = 0;
+        for(int i=1;i<prices.length;++i){
+            if(prices[i] > prices[i-1]){
+                sum += prices[i] - prices[i-1];
+            }
+        }
+        return sum;
+    }
+
     // 内存消耗65.35%，执行用时99.32%？？？离谱，大家都是怎么写的
     // 看完官方的方法，我发现应该这么想，既然是最佳买股票方式，而且买卖次数无限制
     // 也就是说我们要找的答案，是在数学上的最大值，那么就要利用到所有的股票升降差
@@ -31,11 +48,25 @@ public class No122 {
         return profit;
     }
 
-    public static void main(String[] args) {
-        No122 obj = new No122();
-        System.out.println("7 ? " + obj.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
-        System.out.println("4 ? " + obj.maxProfit(new int[]{1, 2, 3, 4, 5}));
-        System.out.println("0 ? " + obj.maxProfit(new int[]{7, 6, 4, 3, 1}));
+    public int maxProfitLeetCodeDP(int[] prices) {
+        int n = prices.length;
+        int dp0 = 0, dp1 = -prices[0];
+        for (int i = 1; i < n; ++i) {
+            int newDp0 = Math.max(dp0, dp1 + prices[i]);
+            int newDp1 = Math.max(dp1, dp0 - prices[i]);
+            dp0 = newDp0;
+            dp1 = newDp1;
+        }
+        return dp0;
+    }
+
+    public int maxProfitLeetCodeGreedy(int[] prices) {
+        int ans = 0;
+        int n = prices.length;
+        for (int i = 1; i < n; ++i) {
+            ans += Math.max(0, prices[i] - prices[i - 1]);
+        }
+        return ans;
     }
 
 }

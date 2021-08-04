@@ -1,4 +1,4 @@
-package CoreJava.Chapter6.InnerClass;
+package CoreJava.Volume1.Chapter6.InnerClass;
 
 import javax.swing.*;
 import java.awt.*;

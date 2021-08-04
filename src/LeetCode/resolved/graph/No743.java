@@ -1,4 +1,4 @@
-package LeetCode.solving;
+package LeetCode.resolved.graph;
 
 import java.util.*;
 
@@ -6,10 +6,107 @@ import java.util.*;
 // 好好学习一下这里的四种算法
 public class No743 {
 
+    public static void main(String[] args) {
+        System.out.println("2 ? " + new No743().networkDelayTime(new int[][]{
+                {2, 1, 1},
+                {2, 3, 1},
+                {3, 4, 1}
+        }, 4, 2));
+        System.out.println("1 ? " + new No743().networkDelayTime(new int[][]{
+                {1, 2, 1}
+        }, 2, 1));
+        System.out.println("-1 ? " + new No743().networkDelayTime(new int[][]{
+                {1, 2, 1}
+        }, 2, 2));
+        System.out.println("3 ? " + new No743().networkDelayTime(new int[][]{
+                {1, 2, 1},
+                {2, 3, 2},
+                {1, 3, 4}
+        }, 3, 1));
+        System.out.println("-1 ? " + new No743().networkDelayTime(new int[][]{
+                {1, 2, 1},
+                {2, 3, 2},
+                {1, 3, 1}
+        }, 3, 2));
+        System.out.println("2 ? " + new No743().networkDelayTime(new int[][]{
+                {2, 1, 1},
+                {2, 3, 1},
+                {3, 4, 1}
+        }, 4, 2));
+        System.out.println("2 ? " + new No743().networkDelayTime(new int[][]{
+                {2, 1, 1},
+                {2, 3, 1},
+                {3, 4, 1}
+        }, 4, 2));
+    }
+
+    // 其实还是应该使用boolean数组代替HashSet，我用的没道理
+    // 又跑通了，时间85.82% 内存40.74% 这下没问题了
+    // 没想到，改着改着，while里的两个循环，还就得是网上代码的先后顺序，我的先后顺序不行，神了
+    // 出了一点小bug，居然之前跑通了？？？匪夷所思
+    // 成功！用时82.87% 内存37.29% 内存低估计是因为我用了HashSet
+    // 尝试使用迪杰斯特拉算法
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[][] data = new int[n+1][n+1];
+        for(int[] column : data){
+            Arrays.fill(column, -1);
+        }
+        HashSet<Integer> notVisit = new HashSet<>();
+        for(int i=1;i<=n;++i){
+            data[i][i] = 0;
+            notVisit.add(i);
+        }
+        for(int[] edge : times){
+            data[edge[0]][edge[1]] = edge[2];
+        }
+        int[] distance = new int[n+1];
+        for(int i=1;i<=n;++i){
+            distance[i] = data[k][i];
+        }
+        int minDis, minIndex;
+        notVisit.remove(k);
+        while(!notVisit.isEmpty()){
+            minDis = Integer.MAX_VALUE;
+            minIndex = -1;
+            for(int i : notVisit){
+                if(distance[i] == -1){
+                    continue;
+                }
+                if(distance[i] < minDis){
+                    minDis = distance[i];
+                    minIndex = i;
+                }
+            }
+            if(minIndex == -1){
+                return -1;
+            }
+            for(int i=1;i<=n;++i){
+                if(data[minIndex][i] == -1 || i == k || i == minIndex){
+                    continue;
+                }
+                if(distance[i] == -1){
+                    distance[i] = distance[minIndex] + data[minIndex][i];
+                }else{
+                    distance[i] = Math.min(distance[i], distance[minIndex] + data[minIndex][i]);
+                }
+            }
+            notVisit.remove(minIndex);
+        }
+        int maxDis = -1;
+        for(int i=1;i<=n;++i){
+            if(distance[i] == -1){
+                return -1;
+            }
+            maxDis = Math.max(maxDis, distance[i]);
+        }
+        return maxDis;
+    }
+
+
     private HashMap<Integer, Set<Integer>> neighborMap;
     private int[][] edgeTable;
     private int[][] pathTable;
-    public int networkDelayTime(int[][] times, int n, int k) {
+    public int networkDelayTime0(int[][] times, int n, int k) {
         neighborMap = new HashMap<>();
         edgeTable = new int[n+1][n+1];
         pathTable = new int[n+1][n+1];
@@ -219,35 +316,5 @@ public class No743 {
         return maxDistance;
     }
 
-    public static void main(String[] args) {
-        System.out.println("2 ? " + new No743().networkDelayTime(new int[][]{
-                {2, 1, 1},
-                {2, 3, 1},
-                {3, 4, 1}
-        }, 4, 2));
-        System.out.println("1 ? " + new No743().networkDelayTime(new int[][]{
-                {1, 2, 1}
-        }, 2, 1));
-        System.out.println("-1 ? " + new No743().networkDelayTime(new int[][]{
-                {1, 2, 1}
-        }, 2, 2));
 
-        System.out.println("3 ? " + new No743().networkDelayTime(new int[][]{
-                {1, 2, 1},
-                {2, 3, 2},
-                {1, 3, 4}
-        }, 3, 1));
-
-        System.out.println("-1 ? " + new No743().networkDelayTime(new int[][]{
-                {1, 2, 1},
-                {2, 3, 2},
-                {1, 3, 1}
-        }, 3, 2));
-
-        System.out.println("2 ? " + new No743().networkDelayTime(new int[][]{
-                {2, 1, 1},
-                {2, 3, 1},
-                {3, 4, 1}
-        }, 4, 2));
-    }
 }

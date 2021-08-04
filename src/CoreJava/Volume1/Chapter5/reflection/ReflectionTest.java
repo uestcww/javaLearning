@@ -1,4 +1,4 @@
-package CoreJava.Chapter5.reflection;
+package CoreJava.Volume1.Chapter5.reflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

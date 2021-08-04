@@ -1,10 +1,11 @@
-package LeetCode.solving;
+package LeetCode.unsolved;
 
 import java.util.*;
 
+// 看懂了，牛逼，这种思路也要掌握，思路在最下方
 public class No310 {
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        System.out.println("[1] ? " + new No310().findMinHeightTrees(4, new int[][]{
 //                {1, 0}, {1, 2}, {1, 3}
 //        }));
@@ -17,6 +18,69 @@ public class No310 {
 //        System.out.println("[0, 1] ? " + new No310().findMinHeightTrees(2, new int[][]{
 //                {0, 1}
 //        }));
+//    }
+
+    // 超出内存限制？？？这是咋回事
+    public ArrayList<ArrayList<Integer>> neighborList;
+    public int[][] data;
+    public List<Integer> findMinHeightTrees3(int n, int[][] edges){
+        neighborList = new ArrayList<>();
+        data = new int[n][n];
+        for(int i=0;i<n;++i){
+            neighborList.add(new ArrayList<Integer>());
+        }
+        for(int[] edge : edges){
+            neighborList.get(edge[0]).add(edge[1]);
+            neighborList.get(edge[1]).add(edge[0]);
+        }
+        int[] maxHeight = new int[n];
+        int minHeight = Integer.MAX_VALUE;
+        for(int i=0;i<n;++i){
+            maxHeight[i] = heightCalculate3(-1, i);
+            if(maxHeight[i] < minHeight){
+                minHeight = maxHeight[i];
+            }
+        }
+        List<Integer> result = new ArrayList<>();
+        for(int i=0;i<n;++i){
+            if(maxHeight[i] == minHeight){
+                result.add(i);
+            }
+        }
+        return result;
+    }
+    public int heightCalculate3(int parentNode, int currentNode){
+        if(parentNode != -1 && data[parentNode][currentNode] != 0){
+            return data[parentNode][currentNode];
+        }
+        ArrayList<Integer> neighbors = neighborList.get(currentNode);
+        if(parentNode == -1){
+            if(neighbors == null || neighbors.size() <= 0){
+                return 1;
+            }
+        }else{
+            if(neighbors.size() == 1){
+                data[parentNode][currentNode] = 1;
+                return 1;
+            }
+        }
+        int max = 0, currentHeight;
+        for(int neighbor : neighbors){
+            if(neighbor == parentNode){
+                continue;
+            }
+            if(data[currentNode][neighbor] == 0){
+                data[currentNode][neighbor] = heightCalculate3(currentNode, neighbor);
+            }
+            currentHeight = data[currentNode][neighbor] + 1;
+            if(currentHeight > max){
+                max = currentHeight;
+            }
+        }
+        if(parentNode != -1){
+            data[parentNode][currentNode] = max;
+        }
+        return max;
     }
 
     // 还是超出时间限制，我服了
@@ -241,3 +305,9 @@ public class No310 {
 
 
 }
+
+
+// 社区的题解的思路，不是既是树又是无向图么，首先用树的角度思考，度为1的叶子节点一定不是，如果把所有叶子节点都去掉，相当于树中去掉了一层，那新的图是不是与老图是一样的答案？
+// 是的，因为任意随机选取一个非叶子节点为树根，所形成的的树的叶子节点集合都相同
+// 由上面推断，其实最后的结果，不是一个节点就是两个节点，不可能三个及以上，因为又不能成环，三个节点只能连成一条线，那中间的就比两边的要浅一层
+// 那也就是说，我们可以一层一层剥洋葱，去掉所有叶子节点形成新图，新图又有了叶子节点，再去掉，以此往复
